@@ -1,6 +1,6 @@
 ﻿namespace Bolillero.Domain;
 
-public class Bolillero
+public class Bolillero : IClonable<Bolillero>
 {
     private readonly List<int> _bolillasAdentro;
     private readonly List<int> _bolillasAfuera;
@@ -16,6 +16,13 @@ public class Bolillero
         _bolillasAdentro = Enumerable.Range(0, cantidadBolillas).ToList();
         _bolillasAfuera = new List<int>();
         _azar = azar ?? new AzarRandom();
+    }
+
+    private Bolillero(List<int> bolillasAdentro, List<int> bolillasAfuera, IAzar azar)
+    {
+        _bolillasAdentro = bolillasAdentro;
+        _bolillasAfuera = bolillasAfuera;
+        _azar = azar;
     }
 
     public int CantidadBolillasAdentro => _bolillasAdentro.Count;
@@ -99,5 +106,16 @@ public class Bolillero
     {
         _bolillasAdentro.AddRange(_bolillasAfuera);
         _bolillasAfuera.Clear();
+    }
+
+    public Bolillero Clonar()
+    {
+        var bolillasAdentroClon = new List<int>(_bolillasAdentro);
+        var bolillasAfueraClon = new List<int>(_bolillasAfuera);
+        var azarClonado = _azar is IClonable<IAzar> clonableAzar
+            ? clonableAzar.Clonar()
+            : new AzarRandom();
+
+        return new Bolillero(bolillasAdentroClon, bolillasAfueraClon, azarClonado);
     }
 }
