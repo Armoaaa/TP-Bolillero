@@ -55,12 +55,48 @@ public class BolilleroTests
 
         Assert.Equal(1, ganadas);
     }
+
+    [Fact]
+    public void Clonar_GeneraUnaCopiaIndependiente()
+    {
+        _bolillero.SacarBolilla();
+        var clon = _bolillero.Clonar();
+
+        _bolillero.SacarBolilla();
+
+        Assert.Equal(8, _bolillero.CantidadBolillasAdentro);
+        Assert.Equal(1, clon.CantidadBolillasAfuera);
+        Assert.Equal(9, clon.CantidadBolillasAdentro);
+    }
+
+    [Fact]
+    public void SimularSinHilos_ConAzarDeterministico_DaResultadoEsperado()
+    {
+        var simulacion = new Simulacion();
+        var ganadas = simulacion.SimularSinHilos(_bolillero, Array.Empty<int>(), 100);
+
+        Assert.Equal(100, ganadas);
+    }
+
+    [Fact]
+    public void SimularConHilos_ConAzarDeterministico_DaResultadoEsperado()
+    {
+        var simulacion = new Simulacion();
+        var ganadas = simulacion.SimularConHilos(_bolillero, Array.Empty<int>(), 100, 4);
+
+        Assert.Equal(100, ganadas);
+    }
 }
 
-public class Primero : IAzar
+public class Primero : IAzar, IClonable<IAzar>
 {
     public int Siguiente(int maximoExclusivo)
     {
         return 0;
+    }
+
+    public IAzar Clonar()
+    {
+        return new Primero();
     }
 }
