@@ -10,7 +10,7 @@ public class Bolillero : IClonable<Bolillero>
     {
         if (cantidadBolillas <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(cantidadBolillas), "La cantidad debe ser mayor a 0.");
+            throw new ArgumentOutOfRangeException(nameof(cantidadBolillas), "La cantidad debe ser mayor a 0."); 
         }
 
         _bolillasAdentro = Enumerable.Range(0, cantidadBolillas).ToList();

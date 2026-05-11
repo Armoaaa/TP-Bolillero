@@ -1,4 +1,4 @@
-﻿using Bolillero.Domain;
+using Bolillero.Domain;
 
 namespace Bolillero.Tests;
 
