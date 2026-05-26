@@ -86,6 +86,15 @@ public class BolilleroTests
 
         Assert.Equal(100, ganadas);
     }
+
+    [Fact]
+    public async Task SimularConHilosAsync_ConAzarDeterministico_DaResultadoEsperado()
+    {
+        var simulacion = new Simulacion();
+        var ganadas = await simulacion.SimularConHilosAsync(_bolillero, Array.Empty<int>(), 100, 4);
+
+        Assert.Equal(100, ganadas);
+    }
 }
 
 public class Primero : IAzar, IClonable<IAzar>
